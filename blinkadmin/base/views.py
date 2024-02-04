@@ -5,7 +5,7 @@ from django.shortcuts import render, HttpResponse
 
 def homePage(request):
     context = {}
-    return HttpResponse("Index")
+    return render(request, 'base/index.html')
 
 
 def ordersPage(request):
