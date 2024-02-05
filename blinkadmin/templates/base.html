@@ -29,15 +29,15 @@
 						Pages
 					</li>
 
-					<li class="sidebar-item active">
+					<li class="sidebar-item">
 						<a class="sidebar-link" href="{% static "index.html" %}">
               <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
             </a>
 					</li>
 
 					<li class="sidebar-item">
-						<a class="sidebar-link" href="{% static "pages-profile.html" %}">
-              <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+						<a class="sidebar-link" href="{% url "restaurants-page" %}">
+              <i class="align-middle" data-feather="user"></i> <span class="align-middle">Restaurants</span>
             </a>
 					</li>
 
@@ -292,8 +292,7 @@
 				<div class="container-fluid">
 					<div class="row text-muted">
 						<div class="col-6 text-start">
-							<p class="mb-0">
-								<a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>Blink</strong></a> - <a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>Bootstrap Admin Template</strong></a>								&copy;
+							<p class="mb-0"><a class="text-muted" href="https://github.com/sufiyaanusmani" target="_blank"><strong>Copyright © {% now "Y" %} Blink. All rights reserved.</strong></a>
 							</p>
 						</div>
 						<div class="col-6 text-end">
