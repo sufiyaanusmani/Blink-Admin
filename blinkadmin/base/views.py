@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 import firebase_admin
-from firebase_admin import credentials, firestore
-from .forms import RestaurantForm
+from firebase_admin import credentials, firestore, auth
+from .forms import RestaurantForm, CustomerForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -13,11 +13,10 @@ db = firestore.client()
 
 
 class Customer:
-    def __init__(self, uid, firstName, lastName, email):
+    def __init__(self, uid, firstName, lastName):
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
-        self.email = email
 
 
 class Restaurant:
@@ -145,6 +144,26 @@ def updateRestaurant(id, restaurant):
         "username": restaurant["username"]
     }
     docRef.update(newData)
+
+def getAllCustomers():
+    customers = []
+    for user in auth.list_users().iterate_all():
+        collectionRef = db.collection("customers").document(user.uid)
+        documentRef = collectionRef.get()
+        cust = documentRef.to_dict()
+        customer = Customer(documentRef.id, cust["firstname"], cust["lastname"])
+        customers.append(customer)
+    return customers
+
+def addNewCustomer(data):
+    try:
+        user = None
+        user = auth.create_user(email=data["email"], password=data["password"])
+        if user is not None:
+            docRef = db.collection("customers").document(user.uid)
+            docRef.set({"firstname": data["firstname"], "lastname": data["lastname"]})
+    except Exception as e:
+        print(e)
 # Create your views here.
 
 
@@ -187,8 +206,9 @@ def ordersPage(request):
 
 @login_required(login_url='login-page')
 def customersPage(request):
-    context = {}
-    return HttpResponse("Customers")
+    customers = getAllCustomers()
+    context = {"customers": customers}
+    return render(request, "base/customers.html", context)
 
 
 @login_required(login_url='login-page')
@@ -239,3 +259,28 @@ def editRestaurantPage(request, id):
 
     context = {"form": form, "id": id}
     return render(request, 'base/edit_restaurant_form.html', context)
+
+@login_required(login_url='login-page')
+def newCustomerPage(request):
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            addNewCustomer(form.cleaned_data)
+        return redirect('customers-page')
+    else:
+        form = CustomerForm()
+
+    context = {"form": form}
+    return render(request, 'base/new_customer_form.html', context)
+
+@login_required(login_url='login-page')
+def deleteCustomerPage(request, id):
+    try:
+        auth.delete_user(id)
+        docRef = db.collection('customers').document(id)
+        docRef.delete()
+    except Exception as e:
+        print(e)
+
+    return redirect('customers-page')
+

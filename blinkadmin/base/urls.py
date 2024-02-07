@@ -14,9 +14,12 @@ urlpatterns = [
 
     path('restaurants/add-new-restaurant/', views.newRestaurantPage,
          name='new-restaurant-page'),
-    path('restaurants/delete-restaurant/<str:id>', views.deleteRestaurantPage,
+    path('restaurants/delete-restaurant/<str:id>/', views.deleteRestaurantPage,
          name='delete-restaurant-page'),
-    path('restaurants/edit-restaurant/<str:id>', views.editRestaurantPage,
+    path('restaurants/edit-restaurant/<str:id>/', views.editRestaurantPage,
          name='edit-restaurant-page'),
+
+    path('customers/add-new-customer/', views.newCustomerPage, name='new-customer-page'),
+    path('customers/delete-customer/<str:id>/', views.deleteCustomerPage, name='delete-customer-page'),
     # Dynamic URLs
 ]
