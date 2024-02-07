@@ -145,6 +145,9 @@ def homePage(request):
 
 
 def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect('home-page')
+
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -165,7 +168,7 @@ def logoutUser(request):
 @login_required(login_url='login-page')
 def ordersPage(request):
     context = {}
-    return HttpResponse("Orders")
+    return render(context, 'base/orders.html', {'context': context})
 
 
 @login_required(login_url='login-page')
