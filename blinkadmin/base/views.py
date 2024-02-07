@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, HttpResponse
 import firebase_admin
 from firebase_admin import credentials, firestore
 from .forms import RestaurantForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 cred = credentials.Certificate(
     "blink-a34ae-firebase-adminsdk-5myau-fd79745951.json")
@@ -63,19 +65,22 @@ def getOrders():
 
 def getRestaurants():
     restaurants = []
-    ref = db.collection("restaurants")
-    docs = ref.stream()
-    for restaurant in docs:
-        res = restaurant.to_dict()
-        restaurants.append(Restaurant(
-            restaurant.id, res["name"], res["ownername"], res["views"]))
+    try:
+        ref = db.collection("restaurants")
+        docs = ref.stream()
+        for restaurant in docs:
+            res = restaurant.to_dict()
+            restaurants.append(Restaurant(
+                restaurant.id, res["name"], res["ownername"], res["views"]))
+    except Exception as e:
+        print(e)
     return restaurants
 
 
 def getTotalEarnings(orders):
     total = 0
     for order in orders:
-        total += order.price
+        total += int(order.price)
 
     return total
 
@@ -83,7 +88,7 @@ def getTotalEarnings(orders):
 def getTotalViews(restaurants):
     total = 0
     for restaurant in restaurants:
-        total += restaurant.views
+        total += int(restaurant.views)
 
     return total
 
@@ -130,6 +135,7 @@ def updateRestaurant(id, restaurant):
 # Create your views here.
 
 
+@login_required(login_url='login-page')
 def homePage(request):
     orders = getOrders()
     earnings = getTotalEarnings(orders)
@@ -138,32 +144,50 @@ def homePage(request):
     return render(request, 'base/index.html', context)
 
 
+def loginPage(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home-page')
+    context = {}
+    return render(request, 'base/login.html', context)
+
+
+def logoutUser(request):
+    logout(request)
+    return redirect('login-page')
+
+
+@login_required(login_url='login-page')
 def ordersPage(request):
     context = {}
     return HttpResponse("Orders")
 
 
+@login_required(login_url='login-page')
 def customersPage(request):
     context = {}
     return HttpResponse("Customers")
 
 
+@login_required(login_url='login-page')
 def restaurantsPage(request):
     restaurants = getRestaurants()
     context = {"restaurants": restaurants}
     return render(request, 'base/restaurants.html', context)
 
 
+@login_required(login_url='login-page')
 def analyticsPage(request):
     context = {}
     return HttpResponse("Analytics")
 
 
-def loginPage(request):
-    context = {}
-    return HttpResponse("Login")
-
-
+@login_required(login_url='login-page')
 def newRestaurantPage(request):
     if request.method == 'POST':
         form = RestaurantForm(request.POST)
@@ -178,12 +202,14 @@ def newRestaurantPage(request):
     return render(request, 'base/new_restaurant_form.html', context)
 
 
+@login_required(login_url='login-page')
 def deleteRestaurantPage(request, id):
     docRef = db.collection('restaurants').document(id)
     docRef.delete()
     return redirect('restaurants-page')
 
 
+@login_required(login_url='login-page')
 def editRestaurantPage(request, id):
     restaurant = getRestaurant(id)
     if request.method == 'POST':
