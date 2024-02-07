@@ -37,11 +37,15 @@ class Product:
 
 
 class Order:
-    def __init__(self, id, price):
+    def __init__(self, id, price, customerId, customerName, restaurantName, status, placedAt):
         self.id = id
         self.products = self.getProducts()
-        self.status = self.getStatus()
         self.price = price
+        self.customerId = customerId
+        self.customerName = customerName
+        self.restaurantName = restaurantName
+        self.status = status
+        self.placedAt = placedAt
 
     def getProducts(self):
         return []
@@ -59,8 +63,17 @@ def getOrders():
     docs = ref.stream()
     for order in docs:
         ord = order.to_dict()
-        orders.append(Order(order.id, int(ord["price"])))
+        o = Order(id=order.id, price=int(ord["price"]), customerId=ord["customerid"], customerName=getCustomerName(
+            ord["customerid"]), restaurantName=ord["restaurant"]["name"], status=ord["status"], placedAt=ord["placedat"])
+        orders.append(o)
     return orders
+
+
+def getCustomerName(id):
+    collectionRef = db.collection("customers").document(id)
+    docRef = collectionRef.get()
+    customer = docRef.to_dict()
+    return f"{customer['firstname']} {customer['lastname']}"
 
 
 def getRestaurants():
@@ -167,8 +180,9 @@ def logoutUser(request):
 
 @login_required(login_url='login-page')
 def ordersPage(request):
-    context = {}
-    return render(context, 'base/orders.html', {'context': context})
+    orders = getOrders()
+    context = {"orders": orders}
+    return render(request, 'base/orders.html', context)
 
 
 @login_required(login_url='login-page')
