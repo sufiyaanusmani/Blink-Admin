@@ -79,13 +79,22 @@ def getTotalEarnings(orders):
 
     return total
 
+
+def getTotalViews(restaurants):
+    total = 0
+    for restaurant in restaurants:
+        total += restaurant.views
+
+    return total
+
 # Create your views here.
 
 
 def homePage(request):
     orders = getOrders()
     earnings = getTotalEarnings(orders)
-    context = {"orders": orders, "earnings": earnings}
+    totalViews = getTotalViews(getRestaurants())
+    context = {"orders": orders, "earnings": earnings, "views": totalViews}
     return render(request, 'base/index.html', context)
 
 
