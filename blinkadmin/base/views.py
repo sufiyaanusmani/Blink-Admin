@@ -164,6 +164,38 @@ def addNewCustomer(data):
             docRef.set({"firstname": data["firstname"], "lastname": data["lastname"]})
     except Exception as e:
         print(e)
+
+def getCustomer(id):
+    collectionRef = db.collection("customers").document(id)
+    documentRef = collectionRef.get()
+    doc = documentRef.to_dict()
+    firstname = doc["firstname"]
+    lastname = doc["lastname"]
+    customer = {
+        "firstname": firstname,
+        "lastname": lastname,
+        "email": "",
+        "password": ""
+    }
+    return customer
+
+def updateCustomer(id, data):
+    try:
+        auth.update_user(
+            id,
+            email=data["email"],
+            password=data["password"],
+        )
+        docRef = db.collection("customers").document(id)
+        newData = {
+            "firstname": data["firstname"],
+            "lastname": data["lastname"]
+        }
+        docRef.update(newData)
+    except Exception as e:
+        print(e)
+
+
 # Create your views here.
 
 
@@ -284,3 +316,16 @@ def deleteCustomerPage(request, id):
 
     return redirect('customers-page')
 
+@login_required(login_url='login-page')
+def editCustomerPage(request, id):
+    customer = getCustomer(id)
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            updateCustomer(id, form.cleaned_data)
+        return redirect('customers-page')
+    else:
+        form = CustomerForm(initial=customer)
+
+    context = {"form": form, "id": id}
+    return render(request, 'base/edit_customer_form.html', context)

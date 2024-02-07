@@ -168,7 +168,7 @@
                                 <td>{{ customer.uid }}</td>
                                 <td>{{ customer.firstName }}</td>
                                 <td>{{ customer.lastName }}</td>
-                                <td><a href="" class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a><a href='{% url "delete-customer-page" customer.uid %}' class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a></td>
+                                <td><a href="{% url "edit-customer-page" customer.uid %}" class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a><a href='{% url "delete-customer-page" customer.uid %}' class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a></td>
                             </tr>
                         
                             {% endfor %}
