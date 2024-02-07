@@ -92,7 +92,7 @@ def addNewRestaurant(data):
     restaurant = {
         "name": data["name"],
         "email": data["email"],
-        "ownername": data["ownerName"],
+        "ownername": data["ownername"],
         "username": data["username"],
         "description": data["description"],
         "Estimated Time": 0,
@@ -106,6 +106,27 @@ def addNewRestaurant(data):
     collectionRef = db.collection("restaurants")
     updateTime, ref = collectionRef.add(restaurant)
 
+
+def getRestaurant(id):
+    docRef = db.collection('restaurants').document(id)
+    restaurantRef = docRef.get()
+    restaurant = restaurantRef.to_dict()
+    print(restaurant)
+    d = {"name": restaurant["name"], "email": restaurant["email"], "ownername": restaurant["ownername"],
+         "description": restaurant["description"], "username": restaurant["username"]}
+    return d
+
+
+def updateRestaurant(id, restaurant):
+    docRef = db.collection("restaurants").document(id)
+    newData = {
+        "name": restaurant["name"],
+        "email": restaurant["email"],
+        "ownername": restaurant["ownername"],
+        "description": restaurant["description"],
+        "username": restaurant["username"]
+    }
+    docRef.update(newData)
 # Create your views here.
 
 
@@ -155,3 +176,23 @@ def newRestaurantPage(request):
 
     context = {"form": form}
     return render(request, 'base/new_restaurant_form.html', context)
+
+
+def deleteRestaurantPage(request, id):
+    docRef = db.collection('restaurants').document(id)
+    docRef.delete()
+    return redirect('restaurants-page')
+
+
+def editRestaurantPage(request, id):
+    restaurant = getRestaurant(id)
+    if request.method == 'POST':
+        form = RestaurantForm(request.POST)
+        if form.is_valid():
+            updateRestaurant(id, form.cleaned_data)
+        return redirect('restaurants-page')
+    else:
+        form = RestaurantForm(initial=restaurant)
+
+    context = {"form": form, "id": id}
+    return render(request, 'base/edit_restaurant_form.html', context)

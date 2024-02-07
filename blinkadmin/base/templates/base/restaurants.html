@@ -170,7 +170,7 @@
                                 <td>{{ restaurant.name }}</td>
                                 <td>{{ restaurant.owner }}</td>
                                 <td>{{ restaurant.views }}</td>
-                                <td><button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button><button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button></td>
+                                <td><a href="{% url "edit-restaurant-page" restaurant.id %}" class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a><a href='{% url "delete-restaurant-page" restaurant.id %}' class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a></td>
                             </tr>
                         
                             {% endfor %}
