@@ -11,5 +11,8 @@ urlpatterns = [
     path('analytics/', views.analyticsPage, name='analytics-page'),
     path('login/', views.loginPage, name='login-page'),
 
+    path('add-new-restaurant/', views.newRestaurantPage,
+         name='new-restaurant-page'),
+
     # Dynamic URLs
 ]

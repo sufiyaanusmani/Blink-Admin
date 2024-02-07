@@ -12,6 +12,8 @@
 	<link rel="canonical" href="https://demo-basic.adminkit.io/" />
     <link href="{% static "css/app.css" %}" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <link rel="icon" type="image/x-icon" href="{% static "img/logo.ico" %}">
 
 </head>
@@ -30,7 +32,7 @@
 					</li>
 
 					<li class="sidebar-item">
-						<a class="sidebar-link" href="{% static "index.html" %}">
+						<a class="sidebar-link" href="{% url "home-page" %}">
               <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
             </a>
 					</li>

@@ -1,7 +1,7 @@
-from django.shortcuts import render, HttpResponse
-import pyrebase
+from django.shortcuts import render, redirect, HttpResponse
 import firebase_admin
 from firebase_admin import credentials, firestore
+from .forms import RestaurantForm
 
 cred = credentials.Certificate(
     "blink-a34ae-firebase-adminsdk-5myau-fd79745951.json")
@@ -87,6 +87,25 @@ def getTotalViews(restaurants):
 
     return total
 
+
+def addNewRestaurant(data):
+    restaurant = {
+        "name": data["name"],
+        "email": data["email"],
+        "ownername": data["ownerName"],
+        "username": data["username"],
+        "description": data["description"],
+        "Estimated Time": 0,
+        "Review": {
+            "Rating Count": 0,
+            "Stars": 0
+        },
+        "views": 0
+    }
+
+    collectionRef = db.collection("restaurants")
+    updateTime, ref = collectionRef.add(restaurant)
+
 # Create your views here.
 
 
@@ -122,3 +141,17 @@ def analyticsPage(request):
 def loginPage(request):
     context = {}
     return HttpResponse("Login")
+
+
+def newRestaurantPage(request):
+    if request.method == 'POST':
+        form = RestaurantForm(request.POST)
+
+        if form.is_valid():
+            addNewRestaurant(form.cleaned_data)
+            return redirect('restaurants-page')
+    else:
+        form = RestaurantForm()
+
+    context = {"form": form}
+    return render(request, 'base/new_restaurant_form.html', context)

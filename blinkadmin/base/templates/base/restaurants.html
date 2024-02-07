@@ -144,13 +144,12 @@
 
 
 <div class="container">
-                      
-                                
     <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body text-center">
                 <h1 class="card-title m-b-0">Restaurants</h1>
+                <a href="{% url "new-restaurant-page" %}" type="button" class="btn btn-outline-success">Add new restaurant</a>
             </div>
                 <div class="table-responsive">
                     <table class="table">
@@ -160,16 +159,20 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Owner</th>
                                 <th scope="col">Views</th>
+                                <th scope="col">Manage</th>
                             </tr>
                         </thead>
                         <tbody class="customtable">
                             {% for restaurant in restaurants %}
+                            
                             <tr>
-                                <td>{{ restaurant.id }}</td>
+                                <td><a href="{% url "home-page" %}">{{ restaurant.id }}</a></td>
                                 <td>{{ restaurant.name }}</td>
                                 <td>{{ restaurant.owner }}</td>
                                 <td>{{ restaurant.views }}</td>
+                                <td><button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button><button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button></td>
                             </tr>
+                        
                             {% endfor %}
                         </tbody>
                     </table>
