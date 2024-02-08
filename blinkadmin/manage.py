@@ -2,11 +2,18 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import firebase_admin
+from firebase_admin import credentials
 
 
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blinkadmin.settings')
+    try:
+        cred = credentials.Certificate("blink-a34ae-firebase-adminsdk-5myau-fd79745951.json")
+        firebase_admin.initialize_app(cred, {"databaseURL": "https://blink-a34ae.firebaseio.com"})
+    except Exception as e:
+        print(e)
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

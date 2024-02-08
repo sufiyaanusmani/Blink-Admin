@@ -4,13 +4,12 @@ from firebase_admin import credentials, firestore, auth
 from .forms import RestaurantForm, CustomerForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django import forms
 
-cred = credentials.Certificate(
-    "blink-a34ae-firebase-adminsdk-5myau-fd79745951.json")
-firebase_admin.initialize_app(
-    cred, {"databaseURL": "https://blink-a34ae.firebaseio.com"})
+
+# cred = credentials.Certificate("blink-a34ae-firebase-adminsdk-5myau-fd79745951.json")
+# firebase_admin.initialize_app(cred, {"databaseURL": "https://blink-a34ae.firebaseio.com"})
 db = firestore.client()
-
 
 class Customer:
     def __init__(self, uid, firstName, lastName):
@@ -54,6 +53,22 @@ class Order:
 
     def getPrice(self):
         return 0
+    
+def getRestaurantNames():
+    names = []
+    collectionRef = db.collection("restaurants")
+    docRef = collectionRef.stream()
+    for doc in docRef:
+        restaurant = doc.to_dict()
+        names.append((doc.id, restaurant["name"]))
+    return names
+
+class FoodForm(forms.Form):
+    name = forms.CharField(label="Item Name")
+    restaurant = forms.ChoiceField(choices=getRestaurantNames())
+    category = forms.CharField(label="Category")
+    price = forms.DecimalField()
+
 
 
 def getOrders():
@@ -128,7 +143,6 @@ def getRestaurant(id):
     docRef = db.collection('restaurants').document(id)
     restaurantRef = docRef.get()
     restaurant = restaurantRef.to_dict()
-    print(restaurant)
     d = {"name": restaurant["name"], "email": restaurant["email"], "ownername": restaurant["ownername"],
          "description": restaurant["description"], "username": restaurant["username"]}
     return d
@@ -195,6 +209,16 @@ def updateCustomer(id, data):
     except Exception as e:
         print(e)
 
+def addNewFood(data):
+    restaurantRef = db.collection("restaurants").document(data["restaurant"])
+    foodsRef = restaurantRef.collection("foodItems")
+    food = {
+        "Category Name": data["category"],
+        "Like Count": 0,
+        "Price": int(data["price"]),
+        "Prod Name": data["name"]
+    }
+    foodsRef.add(food)
 
 # Create your views here.
 
@@ -354,3 +378,19 @@ def foodItemsPage(request):
 
     context = {"foods": foods}
     return render(request, 'base/food-items.html', context)
+
+
+@login_required(login_url='login-page')
+def newFoodPage(request):
+    if request.method == 'POST':
+        form = FoodForm(request.POST)
+
+        if form.is_valid():
+            addNewFood(form.cleaned_data)
+            return redirect('fooditems-page')
+            pass
+    else:
+        form = FoodForm()
+
+    context = {"form": form}
+    return render(request, 'base/new_food_form.html', context)
