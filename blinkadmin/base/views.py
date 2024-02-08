@@ -80,7 +80,7 @@ def getOrders():
         o = Order(id=order.id, price=int(ord["price"]), customerId=ord["customerid"], customerName=getCustomerName(
             ord["customerid"]), restaurantName=ord["restaurant"]["name"], status=ord["status"], placedAt=ord["placedat"])
         orders.append(o)
-    return orders
+    return orders   
 
 
 def getCustomerName(id):
