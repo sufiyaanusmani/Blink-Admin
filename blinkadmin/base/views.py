@@ -80,7 +80,17 @@ def getOrders():
         o = Order(id=order.id, price=int(ord["price"]), customerId=ord["customerid"], customerName=getCustomerName(
             ord["customerid"]), restaurantName=ord["restaurant"]["name"], status=ord["status"], placedAt=ord["placedat"])
         orders.append(o)
-    return orders   
+    return orders  
+
+
+def getTrendingRestaurants():
+    restaurantsRef = db.collection("restaurants").stream()
+    restaurants = []
+    for restaurant in restaurantsRef:
+        res = restaurant.to_dict()
+        restaurants.append([res["name"], int(res["views"])])
+    restaurants.sort(key=lambda x: x[1], reverse=True)
+    return restaurants[:3]
 
 
 def getCustomerName(id):
@@ -228,7 +238,8 @@ def homePage(request):
     orders = getOrders()
     earnings = getTotalEarnings(orders)
     totalViews = getTotalViews(getRestaurants())
-    context = {"orders": orders, "earnings": earnings, "views": totalViews}
+    trendingRestaurants = getTrendingRestaurants()
+    context = {"orders": orders, "earnings": earnings, "views": totalViews, "trendingRestaurants": trendingRestaurants}
     return render(request, 'base/index.html', context)
 
 
