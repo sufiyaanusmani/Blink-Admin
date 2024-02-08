@@ -172,7 +172,7 @@
                                 <td>{{ food.restaurantName }}</td>
                                 <td>{{ food.category }}</td>
                                 <td>{{ food.price }}</td>
-                                <td><a href="" class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a><a href='' class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a></td>
+                                <td><a href="" class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a><a href='{% url "delete-food-page" food.url %}' class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a></td>
                             </tr>
                         
                             {% endfor %}

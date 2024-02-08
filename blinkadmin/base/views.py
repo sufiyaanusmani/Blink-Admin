@@ -372,7 +372,8 @@ def foodItemsPage(request):
                 "restaurantName": restaurant.to_dict()["name"],
                 "name": data["Prod Name"],
                 "price": data["Price"],
-                "category": data["Category Name"]
+                "category": data["Category Name"],
+                "url": f"{restaurantId}:{foodId}"
             }
             foods.append(food)
 
@@ -388,9 +389,16 @@ def newFoodPage(request):
         if form.is_valid():
             addNewFood(form.cleaned_data)
             return redirect('fooditems-page')
-            pass
     else:
         form = FoodForm()
 
     context = {"form": form}
     return render(request, 'base/new_food_form.html', context)
+
+@login_required(login_url='login-page')
+def deleteFoodPage(request, id):
+    ids = id.split(':')
+    restaurantRef = db.collection("restaurants").document(ids[0])
+    foodRef = restaurantRef.collection("foodItems").document(ids[1])
+    foodRef.delete()
+    return redirect("fooditems-page")
