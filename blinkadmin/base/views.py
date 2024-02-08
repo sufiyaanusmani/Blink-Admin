@@ -345,11 +345,12 @@ def foodItemsPage(request):
             food = {
                 "id": foodId,
                 "restaurantId": restaurantId,
+                "restaurantName": restaurant.to_dict()["name"],
                 "name": data["Prod Name"],
-                "Price": data["Price"],
-                "Category Name": data["Category Name"]
+                "price": data["Price"],
+                "category": data["Category Name"]
             }
-            food.append(food)
+            foods.append(food)
 
-    context = {}
+    context = {"foods": foods}
     return render(request, 'base/food-items.html', context)
