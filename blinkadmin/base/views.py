@@ -329,3 +329,27 @@ def editCustomerPage(request, id):
 
     context = {"form": form, "id": id}
     return render(request, 'base/edit_customer_form.html', context)
+
+@login_required(login_url='login-page')
+def foodItemsPage(request):
+    foods = []
+    collectionRef = db.collection('restaurants')
+    restaurants = collectionRef.stream()
+    
+    for restaurant in restaurants:
+        restaurantId = restaurant.id
+        foodItems = db.collection("restaurants").document(restaurantId).collection("foodItems").stream()
+        for docs in foodItems:
+            foodId = docs.id
+            data = docs.to_dict()
+            food = {
+                "id": foodId,
+                "restaurantId": restaurantId,
+                "name": data["Prod Name"],
+                "Price": data["Price"],
+                "Category Name": data["Category Name"]
+            }
+            food.append(food)
+
+    context = {}
+    return render(request, 'base/food-items.html', context)
