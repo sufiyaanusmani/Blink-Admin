@@ -14,7 +14,7 @@ from django.contrib.sessions.models import Session
 # firebase_admin.initialize_app(cred, {"databaseURL": "https://blink-a34ae.firebaseio.com"})
 def initialize_firebase():
     try:
-        cred = credentials.Certificate("blink-a34ae-firebase-adminsdk-5myau-fd79745951.json")
+        cred = credentials.Certificate("/home/blinkadmin/Blink-Admin/blinkadmin/blink-a34ae-firebase-adminsdk-5myau-fd79745951.json")
         firebase_admin.initialize_app(cred, {"databaseURL": "https://blink-a34ae.firebaseio.com"})
     except Exception as e:
         print(e)
