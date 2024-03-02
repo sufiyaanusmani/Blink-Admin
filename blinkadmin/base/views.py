@@ -12,20 +12,20 @@ from django.contrib.sessions.models import Session
 
 # cred = credentials.Certificate("blink-a34ae-firebase-adminsdk-5myau-fd79745951.json")
 # firebase_admin.initialize_app(cred, {"databaseURL": "https://blink-a34ae.firebaseio.com"})
-def initialize_firebase():
+if not firebase_admin._apps:
     try:
         cred = credentials.Certificate("/home/blinkadmin/Blink-Admin/blinkadmin/blink-a34ae-firebase-adminsdk-5myau-fd79745951.json")
         firebase_admin.initialize_app(cred, {"databaseURL": "https://blink-a34ae.firebaseio.com"})
     except Exception as e:
         print(e)
 
-with open('/home/blinkadmin/Blink-Admin/blinkadmin/base/conn_status.txt', 'r') as file:
-    word = file.readline().strip()
-    if word == "false":
-        initialize_firebase()
-        with open('/home/blinkadmin/Blink-Admin/blinkadmin/base/conn_status.txt', 'w') as file:
-            word = "true"
-            file.write(word)
+# with open('/home/blinkadmin/Blink-Admin/blinkadmin/base/conn_status.txt', 'r') as file:
+#     word = file.readline().strip()
+#     if word == "false":
+#         initialize_firebase()
+#         with open('/home/blinkadmin/Blink-Admin/blinkadmin/base/conn_status.txt', 'w') as file:
+#             word = "true"
+#             file.write(word)
 
 db = firestore.client()
 
