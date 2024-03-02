@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-+1qkop@pp1$ym!f@0%j100r9w=8+6t1_jhb7ux337&2t6rh10h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['blinkadmin.pythonanywhere.com']
 
 
 # Application definition

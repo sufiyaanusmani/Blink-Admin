@@ -28,5 +28,6 @@ urlpatterns = [
     path('fooditems/delete-food/<str:id>', views.deleteFoodPage, name='delete-food-page'),
     
 
-    path('fetch_views/', views.fetchViews, name='fetch-views')
+    path('fetch_views/', views.fetchViews, name='fetch-views'),
+
 ]
