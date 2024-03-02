@@ -25,6 +25,8 @@ urlpatterns = [
     path('customers/edit-customer/<str:id>/', views.editCustomerPage, name='edit-customer-page'),
 
     path('fooditems/add-new-food/', views.newFoodPage, name='new-food-page'),
-    path('fooditems/delete-food/<str:id>', views.deleteFoodPage, name='delete-food-page')
-    # Dynamic URLs
+    path('fooditems/delete-food/<str:id>', views.deleteFoodPage, name='delete-food-page'),
+    
+
+    path('fetch_views/', views.fetchViews, name='fetch-views')
 ]

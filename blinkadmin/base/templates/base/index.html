@@ -47,7 +47,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h1 class="mt-1 mb-3">{{ views }}</h1>
+                                    <h1 class="mt-1 mb-3" id="views">0</h1>
                                     <div class="mb-0">
                                         <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 5.25% </span>
                                         <span class="text-muted">Since last week</span>
@@ -303,5 +303,17 @@
             }
         });
     });
+</script>
+
+<script>
+    function fetchViews(){
+        $.ajax({
+            url: "{% url 'fetch-views' %}",
+            success: function(data){
+                $("#views").html(data["views"]);
+            }
+        });
+    }
+    setInterval(fetchViews, 5000);
 </script>
 {% endblock content %}

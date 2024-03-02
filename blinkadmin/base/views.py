@@ -5,7 +5,7 @@ from .forms import RestaurantForm, CustomerForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django import forms
-
+from django.http import JsonResponse
 
 # cred = credentials.Certificate("blink-a34ae-firebase-adminsdk-5myau-fd79745951.json")
 # firebase_admin.initialize_app(cred, {"databaseURL": "https://blink-a34ae.firebaseio.com"})
@@ -237,9 +237,8 @@ def addNewFood(data):
 def homePage(request):
     orders = getOrders()
     earnings = getTotalEarnings(orders)
-    totalViews = getTotalViews(getRestaurants())
     trendingRestaurants = getTrendingRestaurants()
-    context = {"orders": orders, "earnings": earnings, "views": totalViews, "trendingRestaurants": trendingRestaurants}
+    context = {"orders": orders, "earnings": earnings, "trendingRestaurants": trendingRestaurants}
     return render(request, 'base/index.html', context)
 
 
@@ -413,3 +412,8 @@ def deleteFoodPage(request, id):
     foodRef = restaurantRef.collection("foodItems").document(ids[1])
     foodRef.delete()
     return redirect("fooditems-page")
+
+
+def fetchViews(request):
+    totalViews = getTotalViews(getRestaurants())
+    return JsonResponse({"views": totalViews})
