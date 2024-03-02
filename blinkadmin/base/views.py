@@ -239,9 +239,10 @@ def addNewFood(data):
 @login_required(login_url='login-page')
 def homePage(request):
     orders = getOrders()
+    pendingOrders = getPendingOrders()
     earnings = getTotalEarnings(orders)
     trendingRestaurants = getTrendingRestaurants()
-    context = {"orders": orders, "earnings": earnings, "trendingRestaurants": trendingRestaurants}
+    context = {"orders": orders, "earnings": earnings, "trendingRestaurants": trendingRestaurants, "pendingOrders": pendingOrders}
     return render(request, 'base/index.html', context)
 
 
@@ -416,7 +417,20 @@ def deleteFoodPage(request, id):
     foodRef.delete()
     return redirect("fooditems-page")
 
-
+@login_required(login_url='login-page')
 def fetchViews(request):
     totalViews = getTotalViews(getRestaurants())
     return JsonResponse({"views": totalViews})
+
+
+def getPendingOrders():
+    orders = []
+    ref = db.collection("orders")
+    docs = ref.stream()
+    for order in docs:
+        ord = order.to_dict()
+        if ord["status"] == "pending":
+            o = Order(id=order.id, price=int(ord["price"]), customerId=ord["customerid"], customerName=getCustomerName(
+                ord["customerid"]), restaurantName=ord["restaurant"]["name"], status=ord["status"], placedAt=ord["placedat"])
+            orders.append(o)
+    return orders  
