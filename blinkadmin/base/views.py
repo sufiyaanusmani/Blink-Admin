@@ -19,11 +19,11 @@ def initialize_firebase():
     except Exception as e:
         print(e)
 
-with open('conn.txt', 'r') as file:
+with open('conn_status.txt', 'r') as file:
     word = file.readline().strip()
     if word == "false":
         initialize_firebase()
-        with open('conn.txt', 'w') as file:
+        with open('conn_status.txt', 'w') as file:
             word = "true"
             file.write(word)
 
