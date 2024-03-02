@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, HttpResponse
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
+from django.contrib.auth.models import User
 from .forms import RestaurantForm, CustomerForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django import forms
 from django.http import JsonResponse
+from django.utils import timezone
+from django.contrib.sessions.models import Session
 
 # cred = credentials.Certificate("blink-a34ae-firebase-adminsdk-5myau-fd79745951.json")
 # firebase_admin.initialize_app(cred, {"databaseURL": "https://blink-a34ae.firebaseio.com"})
