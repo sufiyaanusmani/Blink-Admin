@@ -305,7 +305,16 @@ def addNewCustomer(data):
     except Exception as e:
         print(e)
 
-def getCustomer(id):
+def getCustomer(id: str):
+    """
+    This function returns Customer's data
+
+    Parameters:
+    - str: Customer's ID
+
+    Returns:
+    - Dict[str, Any]: Customer's Data
+    """
     collectionRef = db.collection("customers").document(id)
     documentRef = collectionRef.get()
     doc = documentRef.to_dict()
