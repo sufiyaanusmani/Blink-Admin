@@ -143,7 +143,16 @@ def getCustomerName(id: str) -> str:
     return f"{customer['firstname']} {customer['lastname']}"
 
 
-def getRestaurants():
+def getRestaurants() -> List[Restaurant]:
+    """
+    This function returns restaurants
+
+    Parameters:
+    None
+
+    Returns:
+    - List[Restaurant]: List of restaurants
+    """
     restaurants = []
     try:
         ref = db.collection("restaurants")
