@@ -287,6 +287,15 @@ def getAllCustomers() -> List[Customer]:
     return customers
 
 def addNewCustomer(data):
+    """
+    This function adds new Customer
+
+    Parameters:
+    - Dict[str, Any]: Customer's data
+
+    Returns:
+    None
+    """
     try:
         user = None
         user = auth.create_user(email=data["email"], password=data["password"])
