@@ -127,7 +127,16 @@ def getTrendingRestaurants() -> List[List]:
     return restaurants[:3]
 
 
-def getCustomerName(id):
+def getCustomerName(id: str) -> str:
+    """
+    This returns full name of a given customer
+
+    Parameters:
+    - str: id of customer
+
+    Returns:
+    - str: full name of customer
+    """
     collectionRef = db.collection("customers").document(id)
     docRef = collectionRef.get()
     customer = docRef.to_dict()
