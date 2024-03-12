@@ -228,7 +228,7 @@ def addNewRestaurant(data):
     updateTime, ref = collectionRef.add(restaurant)
 
 
-def getRestaurant(id: str) -> Dict[str, ]:
+def getRestaurant(id: str):
     """
     This function returns restaurant's data
 
@@ -246,7 +246,7 @@ def getRestaurant(id: str) -> Dict[str, ]:
     return d
 
 
-def updateRestaurant(id: str, restaurant: Dict[str, ]):
+def updateRestaurant(id: str, restaurant):
     """
     This function updates Restaurant's information
 
