@@ -87,7 +87,16 @@ class FoodForm(forms.Form):
 
 
 
-def getOrders():
+def getOrders() -> List[Order]:
+    """
+    This function returns all orders
+
+    Parameters:
+    None
+
+    Returns:
+    - List[Order]: List of Orders
+    """
     orders = []
     ref = db.collection("orders")
     docs = ref.stream()
@@ -99,7 +108,16 @@ def getOrders():
     return orders  
 
 
-def getTrendingRestaurants():
+def getTrendingRestaurants() -> List[List]:
+    """
+    This function top 3 trending restaurants based on views
+
+    Parameters:
+    None
+
+    Returns:
+    - List[List[str, int]]: List of restaurants that contains lists of 2 elements in the form [restaurant_name, views]
+    """
     restaurantsRef = db.collection("restaurants").stream()
     restaurants = []
     for restaurant in restaurantsRef:
