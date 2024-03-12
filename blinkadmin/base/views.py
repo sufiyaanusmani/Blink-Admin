@@ -200,7 +200,16 @@ def getTotalViews(restaurants: List[Restaurant]) -> int:
     return total
 
 
-def addNewRestaurant(data):
+def addNewRestaurant(data: Dict[str, ]):
+    """
+    This function adds new restaurant
+
+    Parameters:
+    - Dict[str, Any]: Restaurant's data
+
+    Returns:
+    None
+    """
     restaurant = {
         "name": data["name"],
         "email": data["email"],
