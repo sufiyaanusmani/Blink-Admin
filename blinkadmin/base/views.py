@@ -267,7 +267,16 @@ def updateRestaurant(id: str, restaurant):
     }
     docRef.update(newData)
 
-def getAllCustomers():
+def getAllCustomers() -> List[Customer]:
+    """
+    This function returns all customers
+
+    Parameters:
+    None
+
+    Returns:
+    - List[Customer]: List of Customers
+    """
     customers = []
     for user in auth.list_users().iterate_all():
         collectionRef = db.collection("customers").document(user.uid)
