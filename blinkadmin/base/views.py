@@ -55,22 +55,13 @@ class Product:
 class Order:
     def __init__(self, id, price, customerId, customerName, restaurantName, status, placedAt):
         self.id = id
-        self.products = self.getProducts()
+        self.products = []
         self.price = price
         self.customerId = customerId
         self.customerName = customerName
         self.restaurantName = restaurantName
         self.status = status
         self.placedAt = placedAt
-
-    def getProducts(self):
-        return []
-
-    def getStatus(self):
-        return ""
-
-    def getPrice(self):
-        return 0
     
 def getRestaurantNames():
     names = []
