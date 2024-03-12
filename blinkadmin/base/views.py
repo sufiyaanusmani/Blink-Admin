@@ -166,7 +166,16 @@ def getRestaurants() -> List[Restaurant]:
     return restaurants
 
 
-def getTotalEarnings(orders):
+def getTotalEarnings(orders: List[Order]) -> int:
+    """
+    This function returns total revenue of all restaurants combined
+
+    Parameters:
+    - List[Order]: List of Orders
+
+    Returns:
+    - int: Total earnings
+    """
     total = 0
     for order in orders:
         total += int(order.price)
