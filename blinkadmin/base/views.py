@@ -228,7 +228,16 @@ def addNewRestaurant(data: Dict[str, ]):
     updateTime, ref = collectionRef.add(restaurant)
 
 
-def getRestaurant(id):
+def getRestaurant(id: str) -> Dict[str, ]:
+    """
+    This function returns restaurant's data
+
+    Parameters:
+    - str: Restaurant's ID
+
+    Returns:
+    - Dict[str, Any]: Restaurant's data
+    """
     docRef = db.collection('restaurants').document(id)
     restaurantRef = docRef.get()
     restaurant = restaurantRef.to_dict()
@@ -237,7 +246,17 @@ def getRestaurant(id):
     return d
 
 
-def updateRestaurant(id, restaurant):
+def updateRestaurant(id: str, restaurant: Dict[str, ]):
+    """
+    This function updates Restaurant's information
+
+    Parameters:
+    - str: Restaurant's ID
+    - Dict[str, Any]: Restaurant's information
+
+    Returns:
+    - int: Total earnings
+    """
     docRef = db.collection("restaurants").document(id)
     newData = {
         "name": restaurant["name"],
